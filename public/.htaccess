@@ -1,49 +1,141 @@
-# Disable directory browsing
-Options -Indexes
+# ======================================================================
+# CodeIgniter 4 — front controller (pasta public/)
+# Preparado para hospedagem compartilhada
+# ======================================================================
+
+Options -Indexes -MultiViews
+ServerSignature Off
 
 # ----------------------------------------------------------------------
-# Rewrite engine
+# Charset e índice padrão
 # ----------------------------------------------------------------------
+AddDefaultCharset UTF-8
+DirectoryIndex index.php
 
-# Turning on the rewrite engine is necessary for the following rules and features.
-# FollowSymLinks must be enabled for this to work.
+# ----------------------------------------------------------------------
+# Segurança básica de arquivos sensíveis dentro de public/
+# ----------------------------------------------------------------------
+<FilesMatch "^\.">
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Deny from all
+	</IfModule>
+</FilesMatch>
+
+<FilesMatch "(?i)\.(env|log|sql|bak|config|ini|phps|swp)$">
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Deny from all
+	</IfModule>
+</FilesMatch>
+
+# ----------------------------------------------------------------------
+# Headers de segurança (quando o módulo estiver disponível)
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+	Header always set X-Content-Type-Options "nosniff"
+	Header always set X-Frame-Options "SAMEORIGIN"
+	Header always set Referrer-Policy "strict-origin-when-cross-origin"
+	Header always set X-XSS-Protection "1; mode=block"
+
+	# Remove assinatura do PHP/Apache quando possível
+	Header unset X-Powered-By
+	Header unset Server
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Compressão (performance)
+# ----------------------------------------------------------------------
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+	AddOutputFilterByType DEFLATE application/javascript application/json
+	AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Cache de assets estáticos
+# ----------------------------------------------------------------------
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType text/css                  "access plus 1 month"
+	ExpiresByType application/javascript    "access plus 1 month"
+	ExpiresByType image/png                 "access plus 1 month"
+	ExpiresByType image/jpeg                "access plus 1 month"
+	ExpiresByType image/gif                 "access plus 1 month"
+	ExpiresByType image/webp                "access plus 1 month"
+	ExpiresByType image/svg+xml             "access plus 1 month"
+	ExpiresByType image/x-icon              "access plus 1 year"
+	ExpiresByType font/woff2                "access plus 1 year"
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Rewrite — front controller do CodeIgniter
+# ----------------------------------------------------------------------
 <IfModule mod_rewrite.c>
 	Options +FollowSymlinks
 	RewriteEngine On
 
-	# If you installed CodeIgniter in a subfolder, you will need to
-	# change the following line to match the subfolder you need.
-	# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
+	# Se a pasta public/ for acessada via subpasta no domínio,
+	# descomente e ajuste:
 	# RewriteBase /
 
-	# Redirect Trailing Slashes...
+	# ------------------------------------------------------------------
+	# HTTPS forçado (recomendado em produção / Hostinger)
+	# Descomente as 2 linhas abaixo quando o SSL estiver ativo:
+	# ------------------------------------------------------------------
+	# RewriteCond %{HTTPS} !=on
+	# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+	# ------------------------------------------------------------------
+	# Remove www (opcional). Descomente se quiser domínio nu:
+	# ------------------------------------------------------------------
+	# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+	# RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+	# Remove barra final (exceto diretórios reais)
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_URI} (.+)/$
 	RewriteRule ^ %1 [L,R=301]
 
-	# Rewrite "www.example.com -> example.com"
-	RewriteCond %{HTTPS} !=on
-	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-	RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
-
-	# Checks to see if the user is attempting to access a valid file,
-	# such as an image or css document, if this isn't true it sends the
-	# request to the front controller, index.php
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
-
-	# Ensure Authorization header is passed along
+	# Encaminha Authorization (APIs / tokens)
 	RewriteCond %{HTTP:Authorization} .
 	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+	# Arquivos e pastas reais (css, js, imagens) seguem direto
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+
+	# Front controller
+	# Em alguns hosts compartilhados o PATH_INFO falha;
+	# se der 404 em rotas, troque a linha abaixo por:
+	# RewriteRule ^([\s\S]*)$ index.php?/$1 [L,NC,QSA]
+	RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
 </IfModule>
 
 <IfModule !mod_rewrite.c>
-	# If we don't have mod_rewrite installed, all 404's
-	# can be sent to index.php, and everything works as normal.
 	ErrorDocument 404 index.php
 </IfModule>
 
-# Disable server signature start
-ServerSignature Off
-# Disable server signature end
+# ----------------------------------------------------------------------
+# Ajustes de PHP (só funcionam se o host permitir php_value/php_flag)
+# Em Hostinger costuma-se usar o seletor de versão PHP no painel.
+# ----------------------------------------------------------------------
+<IfModule mod_php.c>
+	php_value upload_max_filesize 20M
+	php_value post_max_size 20M
+	php_value max_execution_time 120
+	php_value max_input_time 120
+	php_flag display_errors Off
+</IfModule>
+
+# Variante para PHP-FPM / CGI em alguns painéis
+<IfModule mod_php8.c>
+	php_value upload_max_filesize 20M
+	php_value post_max_size 20M
+	php_value max_execution_time 120
+	php_flag display_errors Off
+</IfModule>

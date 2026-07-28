@@ -1,0 +1,62 @@
+# ======================================================================
+
+# CodeIgniter 4 — hospedagem compartilhada (Hostinger, cPanel, etc.)
+
+# ----------------------------------------------------------------------
+
+# Coloque o projeto inteiro em public_html (ou equivalente).
+
+# Este arquivo envia o tráfego para /public e bloqueia pastas sensíveis.
+
+#
+
+# Alternativa recomendada (se o painel permitir):
+
+# aponte o Document Root para a pasta /public
+
+# e este arquivo na raiz deixa de ser necessário.
+
+# ======================================================================
+
+# Desativa listagem de diretórios
+
+Options -Indexes -MultiViews
+
+# ----------------------------------------------------------------------
+
+# Bloqueia acesso direto a pastas e arquivos sensíveis
+
+# ----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+    # Se o projeto estiver em subpasta (ex.: public_html/japassei/),
+    # descomente e ajuste a linha abaixo:
+    RewriteBase /japassei-dataprev/
+
+    # Bloqueia pastas internas do framework
+    RewriteRule ^(app|vendor|writable|tests|docs|spark)(/|$) - [F,L]
+
+    # Bloqueia arquivos de ambiente e de configuração sensíveis
+    RewriteRule ^(\.env|\.git|composer\.(json|lock)|phpunit\.|LICENSE|README) - [F,L]
+
+    # Encaminha tudo para a pasta public/
+    RewriteRule ^$ public/ [L]
+    RewriteRule (.*) public/$1 [L]
+
+</IfModule>
+
+# Fallback quando mod_rewrite não está disponível
+
+<IfModule !mod_rewrite.c>
+DirectoryIndex public/index.php
+</IfModule>
+
+# Bloqueio adicional (Apache 2.4+) caso alguém tente acessar pastas sensíveis
+
+<IfModule mod_authz_core.c>
+	<DirectoryMatch "(^|/)(app|vendor|writable|tests|docs)/">
+		Require all denied
+	</DirectoryMatch>
+</IfModule>
