@@ -1,0 +1,520 @@
+{
+  "info": {
+    "name": "FSRS Service API",
+    "description": "Serviço interno de agendamento por repetição espaçada (FSRS) para o módulo de flashcards - Já Passei DATAPREV",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apiKey",
+    "apiKey": [
+      {
+        "key": "key",
+        "value": "X-Internal-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{TOKEN}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health Status",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/internal/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "internal",
+                "health"
+              ]
+            },
+            "description": "Verifica se o serviço está funcionando. Não requer token."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:3100/internal/health",
+                  "protocol": "http",
+                  "host": [
+                    "127.0.0.1"
+                  ],
+                  "port": "3100",
+                  "path": [
+                    "internal",
+                    "health"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"fsrs_version\": \"5.2.1\",\n  \"node_version\": \"v20.0.0\",\n  \"uptime_seconds\": 1234\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Card Management",
+      "item": [
+        {
+          "name": "Create New Card",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"now\": \"2026-07-29T10:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/internal/fsrs/cards",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "internal",
+                "fsrs",
+                "cards"
+              ]
+            },
+            "description": "Cria um cartão novo com estado inicial. Retorna um cartão no estado 'Novo'."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"now\": \"2026-07-29T10:00:00Z\"\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:3100/internal/fsrs/cards",
+                  "protocol": "http",
+                  "host": [
+                    "127.0.0.1"
+                  ],
+                  "port": "3100",
+                  "path": [
+                    "internal",
+                    "fsrs",
+                    "cards"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"card\": {\n    \"due\": \"2026-07-29T10:00:00Z\",\n    \"stability\": 0,\n    \"difficulty\": 0,\n    \"elapsed_days\": 0,\n    \"scheduled_days\": 0,\n    \"reps\": 0,\n    \"lapses\": 0,\n    \"state\": 0,\n    \"learning_step\": 0,\n    \"last_review\": null\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Preview Ratings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card\": {\n    \"due\": \"2026-07-29T10:00:00Z\",\n    \"stability\": 0,\n    \"difficulty\": 0,\n    \"elapsed_days\": 0,\n    \"scheduled_days\": 0,\n    \"reps\": 0,\n    \"lapses\": 0,\n    \"state\": 0,\n    \"learning_step\": 0,\n    \"last_review\": null\n  },\n  \"now\": \"2026-07-29T10:00:00Z\",\n  \"params\": {\n    \"request_retention\": 0.90,\n    \"maximum_interval\": 36500,\n    \"enable_fuzz\": true,\n    \"enable_short_term\": true,\n    \"learning_steps\": [\"1m\", \"10m\"],\n    \"relearning_steps\": [\"10m\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/internal/fsrs/preview",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "internal",
+                "fsrs",
+                "preview"
+              ]
+            },
+            "description": "Pré-visualiza os quatro possíveis resultados de uma avaliação, sem aplicar nada. Útil para mostrar ao usuário o que acontecerá com cada resposta."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card\": {\"state\":0,\"due\":\"2026-07-29T10:00:00Z\"},\n  \"now\":\"2026-07-29T10:00:00Z\"\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:3100/internal/fsrs/preview",
+                  "protocol": "http",
+                  "host": [
+                    "127.0.0.1"
+                  ],
+                  "port": "3100",
+                  "path": [
+                    "internal",
+                    "fsrs",
+                    "preview"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"ratings\": {\n    \"1\": {\n      \"due\": \"2026-07-29T10:01:00Z\",\n      \"interval_label\": \"1 min\",\n      \"state\": 1,\n      \"stability\": 0.4,\n      \"difficulty\": 5.65,\n      \"elapsed_days\": 0,\n      \"scheduled_days\": 0,\n      \"reps\": 1,\n      \"lapses\": 0,\n      \"learning_step\": 1\n    },\n    \"2\": {\n      \"due\": \"2026-07-29T10:06:00Z\",\n      \"interval_label\": \"6 min\",\n      \"state\": 1\n    },\n    \"3\": {\n      \"due\": \"2026-07-29T10:10:00Z\",\n      \"interval_label\": \"10 min\",\n      \"state\": 1\n    },\n    \"4\": {\n      \"due\": \"2026-08-02T10:00:00Z\",\n      \"interval_label\": \"4 dias\",\n      \"state\": 2\n    }\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Review & History",
+      "item": [
+        {
+          "name": "Submit Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card\": {\n    \"due\": \"2026-07-29T10:00:00Z\",\n    \"stability\": 0,\n    \"difficulty\": 0,\n    \"elapsed_days\": 0,\n    \"scheduled_days\": 0,\n    \"reps\": 0,\n    \"lapses\": 0,\n    \"state\": 0,\n    \"learning_step\": 0,\n    \"last_review\": null\n  },\n  \"rating\": 3,\n  \"now\": \"2026-07-29T10:00:00Z\",\n  \"params\": {\n    \"request_retention\": 0.90,\n    \"maximum_interval\": 36500,\n    \"enable_fuzz\": true,\n    \"enable_short_term\": true,\n    \"learning_steps\": [\"1m\", \"10m\"],\n    \"relearning_steps\": [\"10m\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/internal/fsrs/review",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "internal",
+                "fsrs",
+                "review"
+              ]
+            },
+            "description": "Aplica uma avaliação (1-4) ao cartão e retorna o cartão atualizado junto com o log da revisão.\n\n**Ratings:**\n- 1: Esqueceu (Again)\n- 2: Difícil (Hard)\n- 3: Bom (Good)\n- 4: Fácil (Easy)"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card\": {\"state\":0,\"due\":\"2026-07-29T10:00:00Z\"},\n  \"rating\": 3,\n  \"now\": \"2026-07-29T10:00:00Z\"\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:3100/internal/fsrs/review",
+                  "protocol": "http",
+                  "host": [
+                    "127.0.0.1"
+                  ],
+                  "port": "3100",
+                  "path": [
+                    "internal",
+                    "fsrs",
+                    "review"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"card\": {\n    \"due\": \"2026-08-02T10:00:00Z\",\n    \"stability\": 2.1,\n    \"difficulty\": 5.3,\n    \"elapsed_days\": 0,\n    \"scheduled_days\": 4,\n    \"reps\": 1,\n    \"lapses\": 0,\n    \"state\": 2,\n    \"learning_step\": 0,\n    \"last_review\": \"2026-07-29T10:00:00Z\"\n  },\n  \"log\": {\n    \"rating\": 3,\n    \"state\": 0,\n    \"due\": \"2026-07-29T10:00:00Z\",\n    \"stability\": 0,\n    \"difficulty\": 0,\n    \"review\": \"2026-07-29T10:00:00Z\",\n    \"interval\": 0\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Rollback Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card\": {\n    \"due\": \"2026-08-02T10:00:00Z\",\n    \"stability\": 2.1,\n    \"difficulty\": 5.3,\n    \"elapsed_days\": 0,\n    \"scheduled_days\": 4,\n    \"reps\": 1,\n    \"lapses\": 0,\n    \"state\": 2,\n    \"learning_step\": 0,\n    \"last_review\": \"2026-07-29T10:00:00Z\"\n  },\n  \"log\": {\n    \"rating\": 3,\n    \"state\": 0,\n    \"due\": \"2026-07-29T10:00:00Z\",\n    \"stability\": 0,\n    \"difficulty\": 0,\n    \"review\": \"2026-07-29T10:00:00Z\",\n    \"interval\": 0\n  },\n  \"params\": {\n    \"request_retention\": 0.90,\n    \"maximum_interval\": 36500,\n    \"enable_fuzz\": true,\n    \"enable_short_term\": true,\n    \"learning_steps\": [\"1m\", \"10m\"],\n    \"relearning_steps\": [\"10m\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/internal/fsrs/rollback",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "internal",
+                "fsrs",
+                "rollback"
+              ]
+            },
+            "description": "Desfaz a última avaliação usando o log da revisão anterior. Retorna o cartão restaurado ao estado anterior."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card\": {\"state\":2,\"due\":\"2026-08-02T10:00:00Z\"},\n  \"log\": {\"rating\":3,\"state\":0,\"due\":\"2026-07-29T10:00:00Z\",\"stability\":0,\"difficulty\":0,\"review\":\"2026-07-29T10:00:00Z\",\"interval\":0}\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:3100/internal/fsrs/rollback",
+                  "protocol": "http",
+                  "host": [
+                    "127.0.0.1"
+                  ],
+                  "port": "3100",
+                  "path": [
+                    "internal",
+                    "fsrs",
+                    "rollback"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"card\": {\n    \"due\": \"2026-07-29T10:00:00Z\",\n    \"stability\": 0,\n    \"difficulty\": 0,\n    \"elapsed_days\": 0,\n    \"scheduled_days\": 0,\n    \"reps\": 0,\n    \"lapses\": 0,\n    \"state\": 0,\n    \"learning_step\": 0,\n    \"last_review\": null\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Rebuild from History",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"history\": [\n    {\n      \"rating\": 3,\n      \"state\": 0,\n      \"due\": \"2026-07-29T10:00:00Z\",\n      \"stability\": 0,\n      \"difficulty\": 0,\n      \"review\": \"2026-07-29T10:00:00Z\",\n      \"interval\": 0\n    },\n    {\n      \"rating\": 4,\n      \"state\": 2,\n      \"due\": \"2026-08-02T10:00:00Z\",\n      \"stability\": 2.1,\n      \"difficulty\": 5.3,\n      \"review\": \"2026-08-05T10:00:00Z\",\n      \"interval\": 4\n    }\n  ],\n  \"params\": {\n    \"request_retention\": 0.90,\n    \"maximum_interval\": 36500,\n    \"enable_fuzz\": true,\n    \"enable_short_term\": true,\n    \"learning_steps\": [\"1m\", \"10m\"],\n    \"relearning_steps\": [\"10m\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/internal/fsrs/rebuild",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "internal",
+                "fsrs",
+                "rebuild"
+              ]
+            },
+            "description": "Reconstrói o estado completo de um cartão a partir de seu histórico de revisões."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"history\": [{\"rating\":3,\"state\":0}]\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:3100/internal/fsrs/rebuild",
+                  "protocol": "http",
+                  "host": [
+                    "127.0.0.1"
+                  ],
+                  "port": "3100",
+                  "path": [
+                    "internal",
+                    "fsrs",
+                    "rebuild"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"card\": {\n    \"due\": \"2026-08-05T10:00:00Z\",\n    \"stability\": 7.8,\n    \"difficulty\": 5.2,\n    \"elapsed_days\": 7,\n    \"scheduled_days\": 7,\n    \"reps\": 2,\n    \"lapses\": 0,\n    \"state\": 2,\n    \"learning_step\": 0,\n    \"last_review\": \"2026-08-05T10:00:00Z\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Retrievability",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card\": {\n    \"due\": \"2026-08-02T10:00:00Z\",\n    \"stability\": 2.1,\n    \"difficulty\": 5.3,\n    \"elapsed_days\": 0,\n    \"scheduled_days\": 4,\n    \"reps\": 1,\n    \"lapses\": 0,\n    \"state\": 2,\n    \"learning_step\": 0,\n    \"last_review\": \"2026-07-29T10:00:00Z\"\n  },\n  \"now\": \"2026-07-29T10:00:00Z\",\n  \"params\": {\n    \"request_retention\": 0.90,\n    \"maximum_interval\": 36500,\n    \"enable_fuzz\": true,\n    \"enable_short_term\": true,\n    \"learning_steps\": [\"1m\", \"10m\"],\n    \"relearning_steps\": [\"10m\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/internal/fsrs/retrievability",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "internal",
+                "fsrs",
+                "retrievability"
+              ]
+            },
+            "description": "Calcula a probabilidade atual de recordação do cartão (0-1). Útil para análises e estatísticas."
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card\": {\"state\":2,\"due\":\"2026-08-02T10:00:00Z\",\"stability\":2.1},\n  \"now\": \"2026-07-29T10:00:00Z\"\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:3100/internal/fsrs/retrievability",
+                  "protocol": "http",
+                  "host": [
+                    "127.0.0.1"
+                  ],
+                  "port": "3100",
+                  "path": [
+                    "internal",
+                    "fsrs",
+                    "retrievability"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"retrievability\": 0.85\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://127.0.0.1:3100",
+      "type": "string"
+    },
+    {
+      "key": "TOKEN",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
