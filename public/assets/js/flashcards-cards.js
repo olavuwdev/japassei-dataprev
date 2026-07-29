@@ -8,12 +8,12 @@
     const taxonomy = JSON.parse(dataEl.textContent);
 
     const urls = {
-        create: '/flashcards/api/cartoes',
-        show: (id) => '/flashcards/api/cartoes/' + id,
-        update: (id) => '/flashcards/api/cartoes/' + id + '/editar',
-        remove: (id) => '/flashcards/api/cartoes/' + id + '/excluir',
-        suspend: (id) => '/flashcards/api/cartoes/' + id + '/suspender',
-        improve: (id) => '/flashcards/api/cartoes/' + id + '/melhorar'
+        create: '/japassei-dataprev/flashcards/api/cartoes',
+        show: (id) => '/japassei-dataprev/flashcards/api/cartoes/' + id,
+        update: (id) => '/japassei-dataprev/flashcards/api/cartoes/' + id + '/editar',
+        remove: (id) => '/japassei-dataprev/flashcards/api/cartoes/' + id + '/excluir',
+        suspend: (id) => '/japassei-dataprev/flashcards/api/cartoes/' + id + '/suspender',
+        improve: (id) => '/japassei-dataprev/flashcards/api/cartoes/' + id + '/melhorar'
     };
 
     function esc(value) {
