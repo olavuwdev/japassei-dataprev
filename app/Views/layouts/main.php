@@ -115,6 +115,7 @@ $isActive = static function (array $item) use ($currentUrl): bool {
 
 <div id="toast-root" class="toast-root" aria-live="polite"></div>
 
+<script src="<?= base_url('assets/js/flashcards-config.js') ?>"></script>
 <script src="<?= base_url('assets/js/app.js') ?>"></script>
 <?= $this->renderSection('scripts') ?>
 </body>
