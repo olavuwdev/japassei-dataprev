@@ -140,5 +140,5 @@ $stateChips  = [0 => 'chip-info', 1 => 'chip-flame', 2 => 'chip-primary', 3 => '
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
-<script src="<?= base_url('assets/js/flashcards-cards.js') ?>"></script>
+<script src="<?= base_url('assets/js/flashcards-cards.js?v=2') ?>"></script>
 <?= $this->endSection() ?>
