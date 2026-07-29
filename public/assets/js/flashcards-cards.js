@@ -7,13 +7,15 @@
 
     const taxonomy = JSON.parse(dataEl.textContent);
 
+    const FLASHCARDS_BASE = 'https://flashcards.olavoadriel.com.br';
+
     const urls = {
-        create: '/flashcards/api/cartoes',
-        show: (id) => '/flashcards/api/cartoes/' + id,
-        update: (id) => '/flashcards/api/cartoes/' + id + '/editar',
-        remove: (id) => '/flashcards/api/cartoes/' + id + '/excluir',
-        suspend: (id) => '/flashcards/api/cartoes/' + id + '/suspender',
-        improve: (id) => '/flashcards/api/cartoes/' + id + '/melhorar'
+        create: FLASHCARDS_BASE + '/flashcards/api/cartoes',
+        show: (id) => FLASHCARDS_BASE + '/flashcards/api/cartoes/' + id,
+        update: (id) => FLASHCARDS_BASE + '/flashcards/api/cartoes/' + id + '/editar',
+        remove: (id) => FLASHCARDS_BASE + '/flashcards/api/cartoes/' + id + '/excluir',
+        suspend: (id) => FLASHCARDS_BASE + '/flashcards/api/cartoes/' + id + '/suspender',
+        improve: (id) => FLASHCARDS_BASE + '/flashcards/api/cartoes/' + id + '/melhorar'
     };
 
     function esc(value) {
@@ -192,7 +194,7 @@
             JP.toast(payload.message || (payload.ok ? 'Sugestões geradas.' : 'Erro ao melhorar.'), payload.ok ? 'success' : 'error', 6000);
 
             if (payload.ok && payload.data.job) {
-                window.location.href = '/flashcards/gerar?job=' + payload.data.job.uuid;
+                window.location.href = FLASHCARDS_BASE + '/flashcards/gerar?job=' + payload.data.job.uuid;
             }
             return;
         }
