@@ -7,6 +7,7 @@ $menu = [
     ['url' => 'estudos/cronograma',    'label' => 'Cronograma',    'icon' => '🗓️'],
     ['url' => 'estudos/kanban',        'label' => 'Kanban',        'icon' => '🗂️'],
     ['url' => 'estudos/revisoes',      'label' => 'Revisões',      'icon' => '🔁'],
+    ['url' => 'flashcards',            'label' => 'Flashcards',    'icon' => '🃏'],
     ['url' => 'estudos/questoes',      'label' => 'Questões',      'icon' => '✍️'],
     ['url' => 'estudos/provas',        'label' => 'Provas antigas','icon' => '📄'],
     ['url' => 'estudos/desempenho',    'label' => 'Desempenho',    'icon' => '📈'],
@@ -93,7 +94,15 @@ $isActive = static function (array $item) use ($currentUrl): bool {
 
         <nav class="bottom-nav" aria-label="Menu inferior">
             <?php
-            $bottomItems = [$menu[1], $menu[3], $menu[0], $menu[4], $menu[7]];
+            // Selecionados por URL para não quebrar quando o menu muda de ordem.
+            $byUrl       = array_column($menu, null, 'url');
+            $bottomItems = array_values(array_filter([
+                $byUrl['estudos/hoje']       ?? null,
+                $byUrl['estudos/kanban']     ?? null,
+                $byUrl['estudos']            ?? null,
+                $byUrl['flashcards']         ?? null,
+                $byUrl['estudos/desempenho'] ?? null,
+            ]));
             foreach ($bottomItems as $item): ?>
                 <a href="<?= site_url($item['url']) ?>" class="bottom-item<?= $isActive($item) ? ' is-active' : '' ?>">
                     <span class="bottom-icon" aria-hidden="true"><?= $item['icon'] ?></span>

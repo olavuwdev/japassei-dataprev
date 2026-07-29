@@ -58,4 +58,56 @@ class Services extends BaseService
     {
         return $getShared ? static::getSharedInstance('studyKanban') : new \App\Services\Study\StudyKanbanService();
     }
+
+    // ------------------------------------------------------------ Flashcards
+
+    public static function flashcard(bool $getShared = true): \App\Services\Flashcard\FlashcardService
+    {
+        return $getShared ? static::getSharedInstance('flashcard') : new \App\Services\Flashcard\FlashcardService();
+    }
+
+    public static function flashcardSession(bool $getShared = true): \App\Services\Flashcard\FlashcardSessionService
+    {
+        return $getShared ? static::getSharedInstance('flashcardSession') : new \App\Services\Flashcard\FlashcardSessionService();
+    }
+
+    public static function flashcardQueue(bool $getShared = true): \App\Services\Flashcard\FlashcardQueueService
+    {
+        return $getShared ? static::getSharedInstance('flashcardQueue') : new \App\Services\Flashcard\FlashcardQueueService();
+    }
+
+    public static function flashcardStatistics(bool $getShared = true): \App\Services\Flashcard\FlashcardStatisticsService
+    {
+        return $getShared ? static::getSharedInstance('flashcardStatistics') : new \App\Services\Flashcard\FlashcardStatisticsService();
+    }
+
+    public static function flashcardAi(bool $getShared = true): \App\Services\Flashcard\FlashcardAiService
+    {
+        return $getShared ? static::getSharedInstance('flashcardAi') : new \App\Services\Flashcard\FlashcardAiService();
+    }
+
+    public static function flashcardImport(bool $getShared = true): \App\Services\Flashcard\FlashcardApiImportService
+    {
+        return $getShared ? static::getSharedInstance('flashcardImport') : new \App\Services\Flashcard\FlashcardApiImportService();
+    }
+
+    public static function flashcardToken(bool $getShared = true): \App\Services\Flashcard\FlashcardApiTokenService
+    {
+        return $getShared ? static::getSharedInstance('flashcardToken') : new \App\Services\Flashcard\FlashcardApiTokenService();
+    }
+
+    public static function fsrs(bool $getShared = true): \App\Services\Flashcard\FsrsClientService
+    {
+        return $getShared ? static::getSharedInstance('fsrs') : new \App\Services\Flashcard\FsrsClientService();
+    }
+
+    public static function flashcardValidation(bool $getShared = true): \App\Services\Flashcard\FlashcardValidationService
+    {
+        return $getShared ? static::getSharedInstance('flashcardValidation') : new \App\Services\Flashcard\FlashcardValidationService();
+    }
+
+    public static function aiUsage(bool $getShared = true): \App\Services\Flashcard\AiUsageService
+    {
+        return $getShared ? static::getSharedInstance('aiUsage') : new \App\Services\Flashcard\AiUsageService();
+    }
 }

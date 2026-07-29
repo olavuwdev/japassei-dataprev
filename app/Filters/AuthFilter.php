@@ -15,7 +15,11 @@ class AuthFilter implements FilterInterface
         $user = session()->get('user');
 
         if ($user === null || empty($user['id'])) {
-            if ($request->hasHeader('X-Requested-With') || str_starts_with($request->getUri()->getPath(), '/estudos/api')) {
+            $path = $request->getUri()->getPath();
+
+            if ($request->hasHeader('X-Requested-With')
+                || str_starts_with($path, '/estudos/api')
+                || str_starts_with($path, '/flashcards/api')) {
                 return service('response')
                     ->setStatusCode(401)
                     ->setJSON(['ok' => false, 'message' => 'Sessão expirada. Faça login novamente.']);
