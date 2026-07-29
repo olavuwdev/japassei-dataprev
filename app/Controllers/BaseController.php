@@ -45,6 +45,30 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * Corpo da requisição como array, aceitando JSON ou formulário.
+     *
+     * Decodifica manualmente porque `getJSON()` lança HTTPException quando o
+     * corpo é inválido — o que viraria um 500 com stack trace em vez de um
+     * erro de validação tratado.
+     *
+     * @return array<string, mixed>
+     */
+    protected function jsonPayload(): array
+    {
+        $raw = (string) $this->request->getBody();
+
+        if (trim($raw) !== '') {
+            $decoded = json_decode($raw, true);
+
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        return (array) $this->request->getPost();
+    }
+
+    /**
      * Resposta JSON padronizada para a API interna.
      */
     protected function jsonResponse(bool $ok, array $data = [], string $message = '', int $status = 200): ResponseInterface

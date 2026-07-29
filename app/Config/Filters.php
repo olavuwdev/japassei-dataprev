@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\AuthFilter;
+use App\Filters\FlashcardApiTokenFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -36,6 +37,7 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'auth'          => AuthFilter::class,
+        'flashcardApi'  => FlashcardApiTokenFilter::class,
     ];
 
     /**
@@ -75,7 +77,9 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            'csrf',
+            // A API externa de flashcards autentica por token Bearer e não usa
+            // sessão/cookie, portanto CSRF não se aplica a ela.
+            'csrf' => ['except' => ['api/v1/*']],
             // 'invalidchars',
         ],
         'after' => [

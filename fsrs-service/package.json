@@ -1,0 +1,18 @@
+{
+  "name": "japassei-fsrs-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Serviço interno de agendamento por repetição espaçada (FSRS) do módulo de flashcards.",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/smoke.test.js"
+  },
+  "dependencies": {
+    "ts-fsrs": "^5.2.1"
+  }
+}

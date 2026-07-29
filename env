@@ -67,3 +67,17 @@
 #--------------------------------------------------------------------
 
 # logger.threshold = 4
+
+#--------------------------------------------------------------------
+# FLASHCARDS
+#--------------------------------------------------------------------
+
+# Serviço interno de agendamento FSRS (pasta fsrs-service/).
+# FSRS_SERVICE_URL = 'http://127.0.0.1:3100'
+# FSRS_SERVICE_TOKEN =
+
+# OpenAI — a chave existe apenas no servidor e nunca vai ao navegador.
+# OPENAI_API_KEY =
+# OPENAI_PROJECT_ID =
+# OPENAI_MODEL_FLASHCARDS = 'gpt-4.1-mini'
+# OPENAI_MODEL_FLASHCARDS_FALLBACK = 'gpt-4.1-nano'
