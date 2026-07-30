@@ -31,6 +31,8 @@
     flex-direction: column;
     min-height: calc(100vh - 120px);
     background: var(--flashcard-page-bg);
+    /* Garante que todos os textos usem a cor adaptada ao tema (dark/light) */
+    color: var(--flashcard-text);
     margin: -20px -20px 0;
     padding: 0 20px 20px;
 }
@@ -62,6 +64,23 @@
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* Botões da topbar: cor e borda adaptadas ao tema */
+.review-topbar .btn-ghost {
+    color: var(--flashcard-text);
+    border-color: var(--flashcard-border);
+    background: transparent;
+}
+
+.review-topbar .btn-ghost:hover {
+    background: rgba(128, 128, 128, .15);
+}
+
+.review-topbar .chip {
+    color: var(--flashcard-text);
+    border-color: var(--flashcard-border);
+    background: rgba(128, 128, 128, .12);
 }
 
 .review-progress {
