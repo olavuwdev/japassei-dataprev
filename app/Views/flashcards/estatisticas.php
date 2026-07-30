@@ -4,7 +4,7 @@
 <?= $this->section('page_title') ?>Estatísticas<?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
-<link rel="stylesheet" href="<?= base_url('assets/css/flashcards.css') ?>">
+<link rel="stylesheet" href="<?= asset_v('assets/css/flashcards.css') ?>">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

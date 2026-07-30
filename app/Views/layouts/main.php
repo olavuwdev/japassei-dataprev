@@ -39,7 +39,7 @@ $isActive = static function (array $item) use ($currentUrl): bool {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= base_url('assets/css/app.css') ?>">
+    <link rel="stylesheet" href="<?= asset_v('assets/css/app.css') ?>">
     <?= $this->renderSection('head') ?>
 </head>
 <body>
@@ -115,8 +115,8 @@ $isActive = static function (array $item) use ($currentUrl): bool {
 
 <div id="toast-root" class="toast-root" aria-live="polite"></div>
 
-<script src="<?= base_url('assets/js/flashcards-config.js') ?>"></script>
-<script src="<?= base_url('assets/js/app.js') ?>"></script>
+<script src="<?= asset_v('assets/js/flashcards-config.js') ?>"></script>
+<script src="<?= asset_v('assets/js/app.js') ?>"></script>
 <?= $this->renderSection('scripts') ?>
 </body>
 </html>

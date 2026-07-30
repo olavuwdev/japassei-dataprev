@@ -4,7 +4,7 @@
 <?= $this->section('page_title') ?>Revisão<?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
-<link rel="stylesheet" href="<?= base_url('assets/css/flashcards.css') ?>">
+<link rel="stylesheet" href="<?= asset_v('assets/css/flashcards.css') ?>">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -125,5 +125,5 @@ $config = [
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
-<script src="<?= base_url('assets/js/flashcards-review.js') ?>"></script>
+<script src="<?= asset_v('assets/js/flashcards-review.js') ?>"></script>
 <?= $this->endSection() ?>

@@ -4,7 +4,7 @@
 <?= $this->section('page_title') ?>Integrações e API<?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
-<link rel="stylesheet" href="<?= base_url('assets/css/flashcards.css') ?>">
+<link rel="stylesheet" href="<?= asset_v('assets/css/flashcards.css') ?>">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -206,5 +206,5 @@ Regras ao montar os cartões:
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
-<script src="<?= base_url('assets/js/flashcards-integracoes.js') ?>"></script>
+<script src="<?= asset_v('assets/js/flashcards-integracoes.js') ?>"></script>
 <?= $this->endSection() ?>

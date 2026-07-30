@@ -4,7 +4,7 @@
 <?= $this->section('page_title') ?>Gerar flashcards com IA<?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
-<link rel="stylesheet" href="<?= base_url('assets/css/flashcards.css') ?>">
+<link rel="stylesheet" href="<?= asset_v('assets/css/flashcards.css') ?>">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -179,6 +179,6 @@
 
 <?= $this->section('scripts') ?>
 <?php if ($enabled): ?>
-<script src="<?= base_url('assets/js/flashcards-ai.js') ?>"></script>
+<script src="<?= asset_v('assets/js/flashcards-ai.js') ?>"></script>
 <?php endif; ?>
 <?= $this->endSection() ?>
