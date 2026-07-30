@@ -104,7 +104,7 @@
             modal.el.querySelector('#tk-save').addEventListener('click', async () => {
                 const selected = Array.from(modal.el.querySelectorAll('input[name="scope"]:checked')).map((i) => i.value);
 
-                const payload = await JP.api('/flashcards/api/tokens', {
+                const payload = await JP.api('japassei-dataprev/flashcards/api/tokens', {
                     method: 'POST',
                     body: {
                         name: modal.el.querySelector('#tk-name').value.trim(),
@@ -140,7 +140,7 @@
 
         if (!ok) { return; }
 
-        const payload = await JP.api('/flashcards/api/tokens/' + button.dataset.revoke + '/revogar', {
+        const payload = await JP.api('japassei-dataprev/flashcards/api/tokens/' + button.dataset.revoke + '/revogar', {
             method: 'POST',
             body: {}
         });
