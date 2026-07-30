@@ -99,12 +99,12 @@ $stateChips  = [0 => 'chip-info', 1 => 'chip-flame', 2 => 'chip-primary', 3 => '
                         </div>
                     </div>
                     <div class="card-row-actions">
-                        <button type="button" class="btn btn-sm btn-ghost" data-act="edit">Editar</button>
-                        <button type="button" class="btn btn-sm btn-ghost" data-act="suspend">
-                            <?= $card['suspended'] ? 'Reativar' : 'Suspender' ?>
+                        <button type="button" class="btn btn-sm btn-ghost" data-act="edit">✏️ <span class="fc-btn-label">Editar</span></button>
+                        <button type="button" class="btn btn-sm btn-ghost" data-act="suspend" title="<?= $card['suspended'] ? 'Reativar cartão' : 'Suspender cartão' ?>">
+                            <?= $card['suspended'] ? '▶️' : '⏸' ?> <span class="fc-btn-label"><?= $card['suspended'] ? 'Reativar' : 'Suspender' ?></span>
                         </button>
-                        <button type="button" class="btn btn-sm btn-ghost" data-act="improve" title="Pedir uma versão melhor à IA">✨ Melhorar</button>
-                        <button type="button" class="btn btn-sm btn-danger" data-act="delete">Excluir</button>
+                        <button type="button" class="btn btn-sm btn-ghost" data-act="improve" title="Pedir uma versão melhor à IA">✨ <span class="fc-btn-label">Melhorar</span></button>
+                        <button type="button" class="btn btn-sm btn-danger" data-act="delete" title="Excluir cartão">🗑️ <span class="fc-btn-label">Excluir</span></button>
                     </div>
                 </div>
             <?php endforeach; ?>

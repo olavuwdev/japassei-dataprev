@@ -40,7 +40,7 @@ $hasCards = (int) $summary['total_cards'] > 0;
     </div>
 <?php else: ?>
 
-    <div class="grid grid-3">
+    <div class="grid grid-3 fc-stats-grid">
         <div class="stat">
             <span class="stat-value"><?= (int) $summary['due_reviews'] ?></span>
             <span class="stat-label">Revisões pendentes</span>
@@ -84,9 +84,9 @@ $hasCards = (int) $summary['total_cards'] > 0;
                             <th>Disciplina</th>
                             <th>Cartões</th>
                             <th>Pendentes</th>
-                            <th>Novos</th>
-                            <th>Retenção</th>
-                            <th>Última revisão</th>
+                            <th class="hide-mobile">Novos</th>
+                            <th class="hide-mobile">Retenção</th>
+                            <th class="hide-mobile">Última revisão</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -96,9 +96,9 @@ $hasCards = (int) $summary['total_cards'] > 0;
                             <td><?= esc($subject['subject_name']) ?></td>
                             <td><?= (int) $subject['total_cards'] ?></td>
                             <td><?= (int) $subject['due_cards'] ?></td>
-                            <td><?= (int) $subject['new_cards'] ?></td>
-                            <td><?= $subject['retention'] === null ? '—' : $subject['retention'] . '%' ?></td>
-                            <td class="text-small text-muted">
+                            <td class="hide-mobile"><?= (int) $subject['new_cards'] ?></td>
+                            <td class="hide-mobile"><?= $subject['retention'] === null ? '—' : $subject['retention'] . '%' ?></td>
+                            <td class="hide-mobile text-small text-muted">
                                 <?= $subject['last_review'] ? date('d/m/Y', strtotime((string) $subject['last_review'] . ' UTC')) : '—' ?>
                             </td>
                             <td>

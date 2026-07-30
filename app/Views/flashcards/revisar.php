@@ -66,9 +66,9 @@ $config = [
             <span class="chip" id="review-timer" hidden aria-label="Tempo de sessão">00:00</span>
 
             <div class="review-tools" id="review-tools" hidden>
-                <button type="button" class="btn btn-sm btn-ghost" id="btn-undo" aria-label="Desfazer última resposta (tecla Z)" title="Desfazer (Z)">↶ Desfazer</button>
-                <button type="button" class="btn btn-sm btn-ghost" id="btn-suspend" aria-label="Suspender cartão (tecla S)" title="Suspender (S)">⏸ Suspender</button>
-                <button type="button" class="btn btn-sm btn-ghost" id="btn-finish" aria-label="Encerrar sessão (tecla Esc)" title="Encerrar (Esc)">✕ Encerrar</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-undo" aria-label="Desfazer última resposta (tecla Z)" title="Desfazer (Z)">↶ <span class="fc-btn-label">Desfazer</span></button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-suspend" aria-label="Suspender cartão (tecla S)" title="Suspender (S)">⏸ <span class="fc-btn-label">Suspender</span></button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btn-finish" aria-label="Encerrar sessão (tecla Esc)" title="Encerrar (Esc)">✕ <span class="fc-btn-label">Encerrar</span></button>
             </div>
 
             <div class="review-progress">

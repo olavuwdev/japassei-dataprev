@@ -16,15 +16,17 @@ $items   = [
     ['url' => 'flashcards/configuracoes', 'label' => 'Configurações'],
 ];
 ?>
-<nav class="flex gap-1 flex-wrap mb-2" aria-label="Seções de flashcards">
-    <?php foreach ($items as $item): ?>
-        <?php
-        $active = ! empty($item['exact'])
-            ? $current === $item['url']
-            : str_starts_with($current, $item['url']);
-        ?>
-        <a class="btn btn-sm <?= $active ? 'btn-primary' : 'btn-ghost' ?>"
-           href="<?= site_url($item['url']) ?>"
-           <?= $active ? 'aria-current="page"' : '' ?>><?= esc($item['label']) ?></a>
-    <?php endforeach; ?>
-</nav>
+<div class="fc-tabs-scroll">
+    <nav class="fc-tabs" aria-label="Seções de flashcards">
+        <?php foreach ($items as $item): ?>
+            <?php
+            $active = ! empty($item['exact'])
+                ? $current === $item['url']
+                : str_starts_with($current, $item['url']);
+            ?>
+            <a class="btn btn-sm <?= $active ? 'btn-primary' : 'btn-ghost' ?>"
+               href="<?= site_url($item['url']) ?>"
+               <?= $active ? 'aria-current="page"' : '' ?>><?= esc($item['label']) ?></a>
+        <?php endforeach; ?>
+    </nav>
+</div>

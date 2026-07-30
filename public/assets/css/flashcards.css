@@ -448,32 +448,146 @@ mark.cloze-answer {
     font-size: .88rem;
 }
 
+/* ---------- Grade de estatísticas: 2 colunas no mobile ---------- */
+
+@media (max-width: 900px) {
+    .fc-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Abas com scroll horizontal ---------- */
+
+.fc-tabs-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 12px;
+    /* gradiente sutil indicando scroll */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+}
+
+.fc-tabs-scroll::-webkit-scrollbar { display: none; }
+
+.fc-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+    padding: 2px 8px 4px;
+    white-space: nowrap;
+}
+
 /* ---------- Responsivo ---------- */
 
 @media (max-width: 780px) {
     .review-shell {
         margin: -16px -16px 0;
-        padding: 0 16px 16px;
+        padding: 0 12px 16px;
         min-height: calc(100vh - 96px);
     }
 
-    .flashcard {
-        padding: 26px 20px;
-        min-height: 320px;
-        border-radius: 16px;
+    .review-topbar {
+        gap: 8px;
+        padding: 10px 0;
+        flex-wrap: nowrap;
+        align-items: flex-start;
     }
 
-    .flashcard-question { font-size: clamp(1.15rem, 5vw, 1.45rem); }
+    .review-context strong { font-size: .9rem; }
+    .review-context span { font-size: .78rem; }
 
-    .rating-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .review-tools {
+        gap: 4px;
+        flex-shrink: 0;
+    }
 
-    .rating-btn { min-height: 56px; }
+    /* Oculta rótulos dos botões de ferramentas no mobile */
+    .fc-btn-label { display: none; }
 
-    .review-progress { min-width: 120px; }
+    .review-progress {
+        min-width: 90px;
+    }
+
+    .review-progress-label { font-size: .72rem; }
+
+    .flashcard {
+        padding: 22px 16px;
+        min-height: 280px;
+        border-radius: 12px;
+    }
+
+    .flashcard-question { font-size: clamp(1.1rem, 5vw, 1.4rem); }
+
+    .flashcard-answer { font-size: clamp(1rem, 4.5vw, 1.3rem); }
+
+    .flashcard-scroll { max-height: 46vh; }
+
+    .flashcard-divider { margin: 18px auto; }
+
+    .rating-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        max-width: 100%;
+        margin-top: 16px;
+    }
+
+    .rating-btn {
+        min-height: 64px;
+        font-size: .9rem;
+        padding: 8px 6px;
+    }
+
+    .rating-key { font-size: .68rem; }
+    .rating-interval { font-size: .75rem; }
+
+    .flashcard-actions { margin-top: 20px; }
+
+    .btn-reveal {
+        min-width: 0;
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .review-counters {
+        gap: 14px;
+        padding: 10px 0 0;
+    }
+
+    .review-counter { font-size: .82rem; }
 
     .card-row { flex-direction: column; }
 
-    .card-row-actions { width: 100%; }
+    .card-row-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+
+    .card-row-actions .btn {
+        justify-content: center;
+        padding: 6px 4px;
+        font-size: .75rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .review-shell {
+        padding: 0 10px 12px;
+    }
+
+    .flashcard {
+        padding: 18px 14px;
+        min-height: 240px;
+    }
+
+    .rating-btn { min-height: 58px; }
+
+    /* Stats em 2 colunas no mobile */
+    .fc-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+    .card-row-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* Alvo mínimo de toque de 44px em telas sensíveis. */
