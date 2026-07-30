@@ -11,7 +11,8 @@
     --flashcard-radius: 16px;
     --flashcard-shadow: 0 12px 36px rgba(66, 50, 22, .10);
     --flashcard-text: var(--ink);
-    --flashcard-muted: var(--ink-soft);
+    /* contraste elevado em relação ao ink-soft original (#6B6151) */
+    --flashcard-muted: #3D3529;
 
     --rate-again: #C93A2B;
     --rate-again-soft: #FBE3DF;
@@ -244,14 +245,16 @@ mark.cloze-answer {
 .rating-key {
     font-size: .72rem;
     font-weight: 800;
-    color: var(--flashcard-muted);
+    color: currentColor;
+    opacity: .75;
     letter-spacing: .04em;
 }
 
 .rating-interval {
     font-size: .78rem;
     font-weight: 600;
-    color: var(--flashcard-muted);
+    color: currentColor;
+    opacity: .85;
 }
 
 /* A cor nunca é o único sinal: cada botão tem texto, tecla e posição fixa. */
@@ -595,6 +598,47 @@ mark.cloze-answer {
     .rating-btn,
     .btn-reveal,
     .card-row-actions .btn { min-height: 44px; }
+}
+
+/* ---------- Modo tela cheia de revisão ---------- */
+
+body.is-review {
+    overflow: hidden;
+}
+
+body.is-review .topbar,
+body.is-review .bottom-nav {
+    display: none !important;
+}
+
+body.is-review .content {
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+body.is-review .review-shell {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    margin: 0 !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    min-height: unset;
+    /* respeita notch e home indicator em iOS */
+    padding-top: max(env(safe-area-inset-top), 16px);
+    padding-bottom: max(env(safe-area-inset-bottom), 20px);
+    padding-left: max(env(safe-area-inset-left), 20px);
+    padding-right: max(env(safe-area-inset-right), 20px);
+}
+
+@media (max-width: 780px) {
+    body.is-review .review-shell {
+        padding-left: max(env(safe-area-inset-left), 12px);
+        padding-right: max(env(safe-area-inset-right), 12px);
+    }
 }
 
 /* ---------- Movimento reduzido ---------- */

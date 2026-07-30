@@ -42,7 +42,7 @@ $isActive = static function (array $item) use ($currentUrl): bool {
     <link rel="stylesheet" href="<?= asset_v('assets/css/app.css') ?>">
     <?= $this->renderSection('head') ?>
 </head>
-<body>
+<body class="<?= esc($this->renderSection('body_class', true)) ?>">
 <div class="app-shell">
     <aside class="sidebar">
         <a class="brand" href="<?= site_url('estudos') ?>">

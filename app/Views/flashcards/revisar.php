@@ -3,6 +3,8 @@
 <?= $this->section('title') ?>Revisar flashcards<?= $this->endSection() ?>
 <?= $this->section('page_title') ?>Revisão<?= $this->endSection() ?>
 
+<?= $this->section('body_class') ?>is-review<?= $this->endSection() ?>
+
 <?= $this->section('head') ?>
 <link rel="stylesheet" href="<?= asset_v('assets/css/flashcards.css') ?>">
 <?= $this->endSection() ?>
