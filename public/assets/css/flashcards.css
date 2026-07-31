@@ -590,6 +590,24 @@ mark.cloze-answer {
         padding: 6px 4px;
         font-size: .75rem;
     }
+
+    .table thead th {
+        padding: 10px 8px;
+        font-size: .75rem;
+    }
+
+    .table tbody td {
+        padding: 10px 8px;
+        font-size: .85rem;
+    }
+
+    .table th:nth-child(1) { width: 25%; }
+    .table th:nth-child(2) { width: 12%; }
+    .table th:nth-child(3) { width: 12%; }
+    .table th:nth-child(4) { width: 12%; }
+    .table th:nth-child(5) { width: 12%; }
+    .table th:nth-child(6) { width: 15%; }
+    .table th:nth-child(7) { width: 12%; }
 }
 
 @media (max-width: 560px) {
@@ -667,6 +685,64 @@ body.is-review .review-shell {
     .rating-btn { transition: none; }
     .rating-btn:hover:not(:disabled) { transform: none; }
     .review-progress-fill { transition: none; }
+}
+
+/* ---------- Tabela de Disciplinas ---------- */
+
+.table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.table thead th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 700;
+    font-size: .85rem;
+    letter-spacing: .02em;
+    color: var(--ink-soft);
+    border-bottom: 2px solid var(--border);
+    background: var(--bg-soft);
+}
+
+.table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background: var(--bg-soft);
+}
+
+.table th:nth-child(1) { width: 30%; }
+.table th:nth-child(2) { width: 12%; text-align: center; }
+.table th:nth-child(3) { width: 12%; text-align: center; }
+.table th:nth-child(4) { width: 12%; text-align: center; }
+.table th:nth-child(5) { width: 12%; text-align: center; }
+.table th:nth-child(6) { width: 16%; text-align: center; }
+.table th:nth-child(7) { width: 6%; text-align: right; }
+
+.table td:nth-child(2),
+.table td:nth-child(3),
+.table td:nth-child(4),
+.table td:nth-child(5),
+.table td:nth-child(6) {
+    text-align: center;
+}
+
+.table td:nth-child(7) {
+    text-align: right;
+}
+
+.table .btn-sm {
+    white-space: nowrap;
 }
 
 /* ---------- Modo escuro ---------- */
