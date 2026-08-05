@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filters;
 
+use App\Services\Auth\RememberMeService;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -15,6 +16,15 @@ class AuthFilter implements FilterInterface
         $user = session()->get('user');
 
         if ($user === null || empty($user['id'])) {
+            // Sessão expirada, mas o usuário pediu para continuar conectado.
+            $remember = new RememberMeService();
+
+            if (($remembered = $remember->attempt()) !== null) {
+                $remember->openSession($remembered);
+
+                return null;
+            }
+
             $path = $request->getUri()->getPath();
 
             if ($request->hasHeader('X-Requested-With')

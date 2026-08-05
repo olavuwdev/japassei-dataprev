@@ -7,13 +7,23 @@ namespace App\Controllers;
 use App\Models\StudyStreakModel;
 use App\Models\StudyUserSettingModel;
 use App\Models\UserModel;
+use App\Services\Auth\RememberMeService;
 
 class AuthController extends BaseController
 {
-    public function loginForm(): string
+    public function loginForm()
     {
         if (session()->get('user')) {
-            return (string) redirect()->to('/estudos');
+            return redirect()->to('/estudos');
+        }
+
+        // Cookie de "manter-me conectado" válido: entra direto.
+        $remember = new RememberMeService();
+
+        if (($user = $remember->attempt()) !== null) {
+            $remember->openSession($user);
+
+            return redirect()->to('/estudos');
         }
 
         return view('auth/login');
@@ -39,12 +49,15 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('error', 'E-mail ou senha inválidos.');
         }
 
-        session()->regenerate();
-        session()->set('user', [
-            'id'    => (int) $user['id'],
-            'name'  => $user['name'],
-            'email' => $user['email'],
-        ]);
+        $remember = new RememberMeService();
+        $remember->openSession($user);
+
+        if ($this->request->getPost('remember_me')) {
+            $remember->remember((int) $user['id']);
+        } else {
+            // Desmarcou nesta entrada: descarta um token antigo do dispositivo.
+            $remember->forget();
+        }
 
         $redirect = session()->get('redirect_url') ?? '/estudos';
         session()->remove('redirect_url');
@@ -112,9 +125,8 @@ class AuthController extends BaseController
             'total_qualified_days' => 0,
         ]);
 
-        session()->regenerate();
-        session()->set('user', [
-            'id'    => (int) $userId,
+        (new RememberMeService())->openSession([
+            'id'    => $userId,
             'name'  => $this->request->getPost('name'),
             'email' => $this->request->getPost('email'),
         ]);
@@ -124,6 +136,7 @@ class AuthController extends BaseController
 
     public function logout()
     {
+        (new RememberMeService())->forget();
         session()->destroy();
 
         return redirect()->to('/login');

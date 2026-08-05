@@ -673,6 +673,10 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
     box-shadow: var(--shadow-lift);
 }
 
+.auth-options { display: flex; flex-direction: column; gap: 9px; margin: -4px 0 18px; }
+.auth-options .checkbox-row { font-size: .85rem; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+.auth-options .checkbox-row input { cursor: pointer; }
+
 .auth-brand { text-align: center; margin-bottom: 22px; }
 .auth-brand .brand-flame { font-size: 2.6rem; display: inline-block; }
 .auth-brand h1 { margin: 8px 0 2px; }

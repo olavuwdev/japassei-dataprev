@@ -46,6 +46,18 @@
                 <label for="password">Senha</label>
                 <input type="password" id="password" name="password" required autocomplete="current-password">
             </div>
+
+            <div class="auth-options">
+                <label class="checkbox-row" for="remember_email">
+                    <input type="checkbox" id="remember_email" name="remember_email" value="1">
+                    <span>Lembrar meu e-mail neste dispositivo</span>
+                </label>
+                <label class="checkbox-row" for="remember_me">
+                    <input type="checkbox" id="remember_me" name="remember_me" value="1" <?= old('remember_me') ? 'checked' : '' ?>>
+                    <span>Manter-me conectado por 30 dias</span>
+                </label>
+            </div>
+
             <button type="submit" class="btn btn-primary btn-lg btn-block">Entrar</button>
         </form>
 
@@ -54,5 +66,51 @@
         </p>
     </div>
 </div>
+
+<script>
+// "Lembrar meu e-mail": guarda apenas o e-mail no localStorage, para poupar
+// digitação. A senha nunca é armazenada — quem cuida disso é o gerenciador de
+// senhas do navegador, via autocomplete="current-password".
+(function () {
+    var KEY = 'japassei:login:email';
+    var form = document.querySelector('.auth-card form');
+    var email = document.getElementById('email');
+    var check = document.getElementById('remember_email');
+    var password = document.getElementById('password');
+
+    if (!form || !email || !check) {
+        return;
+    }
+
+    var saved = null;
+
+    try {
+        saved = localStorage.getItem(KEY);
+    } catch (e) {
+        return; // localStorage bloqueado (modo privado / cookies desativados)
+    }
+
+    if (saved && !email.value) {
+        email.value = saved;
+        check.checked = true;
+
+        if (password) {
+            password.focus();
+        }
+    }
+
+    form.addEventListener('submit', function () {
+        try {
+            if (check.checked && email.value.trim()) {
+                localStorage.setItem(KEY, email.value.trim());
+            } else {
+                localStorage.removeItem(KEY);
+            }
+        } catch (e) {
+            // Sem persistência disponível: segue o login normalmente.
+        }
+    });
+})();
+</script>
 </body>
 </html>
