@@ -20,7 +20,9 @@ $hasCards = (int) $summary['total_cards'] > 0;
     <div class="flex gap-1 flex-wrap">
         <a class="btn btn-flame" href="<?= site_url('flashcards/revisar') ?>">🔥 Revisar agora</a>
         <a class="btn btn-primary" href="<?= site_url('flashcards/cartoes') ?>">➕ Criar flashcard</a>
-        <a class="btn btn-ghost" href="<?= site_url('flashcards/gerar') ?>">✨ Gerar com IA</a>
+        <?php if (user_can(\App\Services\Auth\Permissions::FLASHCARDS_IA)): ?>
+            <a class="btn btn-ghost" href="<?= site_url('flashcards/gerar') ?>">✨ Gerar com IA</a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -34,7 +36,9 @@ $hasCards = (int) $summary['total_cards'] > 0;
             <p>Crie seu primeiro flashcard manualmente ou utilize a inteligência artificial para gerar cartões a partir de um conteúdo.</p>
             <div class="flex gap-1 mt-2" style="justify-content:center">
                 <a class="btn btn-primary" href="<?= site_url('flashcards/cartoes') ?>">Criar flashcard</a>
-                <a class="btn btn-ghost" href="<?= site_url('flashcards/gerar') ?>">Gerar com IA</a>
+                <?php if (user_can(\App\Services\Auth\Permissions::FLASHCARDS_IA)): ?>
+                    <a class="btn btn-ghost" href="<?= site_url('flashcards/gerar') ?>">Gerar com IA</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

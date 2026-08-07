@@ -63,7 +63,7 @@
         </form>
 
         <p class="text-center text-small mt-3 mb-0">
-            Ainda não tem conta? <a href="<?= site_url('registrar') ?>">Criar conta</a>
+            Precisa de acesso? Peça a conta a quem administra o sistema.
         </p>
     </div>
 </div>

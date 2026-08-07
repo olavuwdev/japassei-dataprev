@@ -90,7 +90,9 @@ $config = [
                     <p class="subtitle">Você está em dia. Novos cartões e revisões aparecem conforme o agendamento do FSRS.</p>
                     <div class="flex gap-1 mt-3" style="justify-content:center">
                         <a class="btn btn-ghost" href="<?= site_url('flashcards') ?>">Voltar ao painel</a>
-                        <a class="btn btn-primary" href="<?= site_url('flashcards/gerar') ?>">Gerar novos cartões</a>
+                        <?php if (user_can(\App\Services\Auth\Permissions::FLASHCARDS_IA)): ?>
+                            <a class="btn btn-primary" href="<?= site_url('flashcards/gerar') ?>">Gerar novos cartões</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </article>

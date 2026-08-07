@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filters;
 
+use App\Models\UserPermissionModel;
+use App\Services\Auth\Permissions;
 use App\Services\Flashcard\ApiTokenContext;
 use App\Services\Flashcard\FlashcardApiTokenService;
 use CodeIgniter\Filters\FilterInterface;
@@ -44,6 +46,15 @@ class FlashcardApiTokenFilter implements FilterInterface
 
         if (! $service->hasScope($token, $scope)) {
             return $this->deny(403, 'Este token não possui a permissão "' . $scope . '".');
+        }
+
+        // O token vale enquanto o dono continuar autorizado a usar a integração:
+        // sem esta checagem, revogar a permissão na tela de usuários não teria
+        // efeito nenhum sobre os tokens já emitidos.
+        $owner = (new UserPermissionModel())->forUser((int) $token['user_id']);
+
+        if (! in_array(Permissions::FLASHCARDS_INTEGRACOES, $owner, true)) {
+            return $this->deny(403, 'O usuário dono deste token não tem mais acesso às integrações.');
         }
 
         $config    = config(FlashcardsConfig::class);

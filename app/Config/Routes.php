@@ -8,12 +8,25 @@ $routes->get('/', 'Home::index');
 // Autenticação
 $routes->get('login', 'AuthController::loginForm');
 $routes->post('login', 'AuthController::login');
+// Auto-cadastro encerrado — contas são criadas em Configurações > Usuários.
 $routes->get('registrar', 'AuthController::registerForm');
-$routes->post('registrar', 'AuthController::register');
 $routes->get('logout', 'AuthController::logout');
 
+// Gestão de usuários e permissões
+$routes->group('estudos/usuarios', [
+    'namespace' => 'App\Controllers\Estudos',
+    'filter'    => ['auth', 'perm:usuarios'],
+], static function (RouteCollection $routes): void {
+    $routes->get('/', 'UsuariosController::index');
+    $routes->get('novo', 'UsuariosController::create');
+    $routes->post('novo', 'UsuariosController::store');
+    $routes->get('(:num)', 'UsuariosController::edit/$1');
+    $routes->post('(:num)', 'UsuariosController::update/$1');
+    $routes->post('(:num)/excluir', 'UsuariosController::delete/$1');
+});
+
 // Módulo de estudos (protegido)
-$routes->group('estudos', ['namespace' => 'App\Controllers\Estudos', 'filter' => 'auth'], static function (RouteCollection $routes): void {
+$routes->group('estudos', ['namespace' => 'App\Controllers\Estudos', 'filter' => ['auth', 'perm:estudos']], static function (RouteCollection $routes): void {
     $routes->get('/', 'DashboardController::index');
     $routes->get('hoje', 'HojeController::index');
     $routes->get('cronograma', 'CronogramaController::index');
@@ -76,7 +89,7 @@ $routes->group('estudos', ['namespace' => 'App\Controllers\Estudos', 'filter' =>
 });
 
 // Módulo de flashcards (protegido)
-$routes->group('flashcards', ['namespace' => 'App\Controllers\Flashcards', 'filter' => 'auth'], static function (RouteCollection $routes): void {
+$routes->group('flashcards', ['namespace' => 'App\Controllers\Flashcards', 'filter' => ['auth', 'perm:flashcards']], static function (RouteCollection $routes): void {
     $routes->get('/', 'DashboardController::index');
 
     // Sessão de revisão
@@ -87,8 +100,8 @@ $routes->group('flashcards', ['namespace' => 'App\Controllers\Flashcards', 'filt
     $routes->get('cartoes', 'CartoesController::index');
 
     // Geração por IA e fontes
-    $routes->get('gerar', 'IaController::new');
-    $routes->get('fontes', 'IaController::sources');
+    $routes->get('gerar', 'IaController::new', ['filter' => 'perm:flashcards_ia']);
+    $routes->get('fontes', 'IaController::sources', ['filter' => 'perm:flashcards_ia']);
 
     // Estatísticas e configurações
     $routes->get('estatisticas', 'EstatisticasController::index');
@@ -96,9 +109,9 @@ $routes->group('flashcards', ['namespace' => 'App\Controllers\Flashcards', 'filt
     $routes->post('configuracoes', 'ConfiguracoesController::update');
 
     // Integrações externas
-    $routes->get('integracoes', 'IntegracoesController::index');
-    $routes->get('integracoes/documentacao', 'IntegracoesController::documentation');
-    $routes->get('importacoes', 'IntegracoesController::pending');
+    $routes->get('integracoes', 'IntegracoesController::index', ['filter' => 'perm:flashcards_integracoes']);
+    $routes->get('integracoes/documentacao', 'IntegracoesController::documentation', ['filter' => 'perm:flashcards_integracoes']);
+    $routes->get('importacoes', 'IntegracoesController::pending', ['filter' => 'perm:flashcards_integracoes']);
 
     // API interna (JSON)
     $routes->group('api', static function (RouteCollection $routes): void {
@@ -118,21 +131,23 @@ $routes->group('flashcards', ['namespace' => 'App\Controllers\Flashcards', 'filt
         $routes->post('cartoes/aprovar', 'CartoesController::approve');
 
         // Geração por IA
-        $routes->post('gerar', 'IaController::createJob');
-        $routes->post('gerar/(:segment)/processar', 'IaController::process/$1');
-        $routes->get('gerar/(:segment)/status', 'IaController::status/$1');
-        $routes->get('gerar/(:segment)/resultado', 'IaController::result/$1');
-        $routes->post('gerar/(:segment)/aprovar', 'IaController::approve/$1');
-        $routes->post('gerar/(:segment)/descartar', 'IaController::reject/$1');
-        $routes->post('gerar/(:segment)/reprocessar', 'IaController::retry/$1');
-        $routes->post('cartoes/(:num)/melhorar', 'IaController::improve/$1');
+        $routes->group('', ['filter' => 'perm:flashcards_ia'], static function (RouteCollection $routes): void {
+            $routes->post('gerar', 'IaController::createJob');
+            $routes->post('gerar/(:segment)/processar', 'IaController::process/$1');
+            $routes->get('gerar/(:segment)/status', 'IaController::status/$1');
+            $routes->get('gerar/(:segment)/resultado', 'IaController::result/$1');
+            $routes->post('gerar/(:segment)/aprovar', 'IaController::approve/$1');
+            $routes->post('gerar/(:segment)/descartar', 'IaController::reject/$1');
+            $routes->post('gerar/(:segment)/reprocessar', 'IaController::retry/$1');
+            $routes->post('cartoes/(:num)/melhorar', 'IaController::improve/$1');
+        });
 
         // Estatísticas
         $routes->get('estatisticas/dados', 'EstatisticasController::data');
 
         // Integrações
-        $routes->post('tokens', 'IntegracoesController::createToken');
-        $routes->post('tokens/(:segment)/revogar', 'IntegracoesController::revokeToken/$1');
+        $routes->post('tokens', 'IntegracoesController::createToken', ['filter' => 'perm:flashcards_integracoes']);
+        $routes->post('tokens/(:segment)/revogar', 'IntegracoesController::revokeToken/$1', ['filter' => 'perm:flashcards_integracoes']);
 
         // Diagnóstico do serviço FSRS
         $routes->post('fsrs/testar', 'ConfiguracoesController::testFsrs');

@@ -6,6 +6,7 @@ namespace App\Services\Auth;
 
 use App\Models\RememberTokenModel;
 use App\Models\UserModel;
+use App\Models\UserPermissionModel;
 
 /**
  * Login persistente ("manter-me conectado") por cookie assinado.
@@ -158,11 +159,43 @@ class RememberMeService
     public function openSession(array $user): void
     {
         session()->regenerate();
-        session()->set('user', [
-            'id'    => (int) $user['id'],
-            'name'  => $user['name'],
-            'email' => $user['email'],
-        ]);
+        session()->set('user', self::sessionPayload((int) $user['id'], (string) $user['name'], (string) $user['email']));
+    }
+
+    /**
+     * Recarrega da base os dados do usuário em sessão.
+     *
+     * Usado depois que um administrador altera permissões: sem isso, quem já
+     * estava logado continuaria com o acesso antigo até sair e entrar de novo.
+     */
+    public static function refreshSession(int $userId): void
+    {
+        $current = session()->get('user');
+
+        if (! is_array($current) || (int) ($current['id'] ?? 0) !== $userId) {
+            return;
+        }
+
+        $user = (new UserModel())->find($userId);
+
+        if ($user === null) {
+            return;
+        }
+
+        session()->set('user', self::sessionPayload($userId, (string) $user['name'], (string) $user['email']));
+    }
+
+    /**
+     * @return array{id: int, name: string, email: string, permissions: list<string>}
+     */
+    private static function sessionPayload(int $userId, string $name, string $email): array
+    {
+        return [
+            'id'          => $userId,
+            'name'        => $name,
+            'email'       => $email,
+            'permissions' => (new UserPermissionModel())->forUser($userId),
+        ];
     }
 
     /**

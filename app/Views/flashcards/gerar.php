@@ -26,7 +26,9 @@
             <p class="text-small text-muted">Você ainda pode criar cartões manualmente ou importá-los pela API externa.</p>
             <div class="flex gap-1 mt-2" style="justify-content:center">
                 <a class="btn btn-primary" href="<?= site_url('flashcards/cartoes') ?>">Criar manualmente</a>
-                <a class="btn btn-ghost" href="<?= site_url('flashcards/integracoes') ?>">Usar a API externa</a>
+                <?php if (user_can(\App\Services\Auth\Permissions::FLASHCARDS_INTEGRACOES)): ?>
+                    <a class="btn btn-ghost" href="<?= site_url('flashcards/integracoes') ?>">Usar a API externa</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

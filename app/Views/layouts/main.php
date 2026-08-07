@@ -1,19 +1,27 @@
 <?php
-$user      = session()->get('user');
+
+use App\Services\Auth\Permissions;
+
+$user       = session()->get('user');
 $currentUrl = uri_string();
-$menu = [
-    ['url' => 'estudos',               'label' => 'Visão geral',   'icon' => '🏠', 'exact' => true],
-    ['url' => 'estudos/hoje',          'label' => 'Hoje',          'icon' => '📌'],
-    ['url' => 'estudos/cronograma',    'label' => 'Cronograma',    'icon' => '🗓️'],
-    ['url' => 'estudos/kanban',        'label' => 'Kanban',        'icon' => '🗂️'],
-    ['url' => 'estudos/revisoes',      'label' => 'Revisões',      'icon' => '🔁'],
-    ['url' => 'flashcards',            'label' => 'Flashcards',    'icon' => '🃏'],
-    ['url' => 'estudos/questoes',      'label' => 'Questões',      'icon' => '✍️'],
-    ['url' => 'estudos/provas',        'label' => 'Provas antigas','icon' => '📄'],
-    ['url' => 'estudos/desempenho',    'label' => 'Desempenho',    'icon' => '📈'],
-    ['url' => 'estudos/historico',     'label' => 'Histórico',     'icon' => '🕘'],
-    ['url' => 'estudos/configuracoes', 'label' => 'Configurações', 'icon' => '⚙️'],
-];
+$homeUrl    = permission_home();
+
+// `perm` decide se o item aparece; a rota correspondente é bloqueada pelo
+// PermissionFilter, então esconder aqui é só para não oferecer um beco sem saída.
+$menu = array_values(array_filter([
+    ['url' => 'estudos',               'label' => 'Visão geral',   'icon' => '🏠', 'exact' => true, 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/hoje',          'label' => 'Hoje',          'icon' => '📌', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/cronograma',    'label' => 'Cronograma',    'icon' => '🗓️', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/kanban',        'label' => 'Kanban',        'icon' => '🗂️', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/revisoes',      'label' => 'Revisões',      'icon' => '🔁', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'flashcards',            'label' => 'Flashcards',    'icon' => '🃏', 'perm' => Permissions::FLASHCARDS],
+    ['url' => 'estudos/questoes',      'label' => 'Questões',      'icon' => '✍️', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/provas',        'label' => 'Provas antigas','icon' => '📄', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/desempenho',    'label' => 'Desempenho',    'icon' => '📈', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/historico',     'label' => 'Histórico',     'icon' => '🕘', 'perm' => Permissions::ESTUDOS],
+    ['url' => 'estudos/usuarios',      'label' => 'Usuários',      'icon' => '👥', 'perm' => Permissions::USUARIOS],
+    ['url' => 'estudos/configuracoes', 'label' => 'Configurações', 'icon' => '⚙️', 'perm' => Permissions::ESTUDOS],
+], static fn (array $item): bool => user_can($item['perm'])));
 $isActive = static function (array $item) use ($currentUrl): bool {
     if (! empty($item['exact'])) {
         return $currentUrl === $item['url'];
@@ -45,7 +53,7 @@ $isActive = static function (array $item) use ($currentUrl): bool {
 <body class="<?= esc($this->renderSection('body_class', true)) ?>">
 <div class="app-shell">
     <aside class="sidebar">
-        <a class="brand" href="<?= site_url('estudos') ?>">
+        <a class="brand" href="<?= esc($homeUrl, 'attr') ?>">
             <span class="brand-flame" aria-hidden="true">🔥</span>
             <span class="brand-text">Já&nbsp;Passei<em>DATAPREV 2026</em></span>
         </a>
@@ -68,12 +76,12 @@ $isActive = static function (array $item) use ($currentUrl): bool {
 
     <div class="main-column">
         <header class="topbar">
-            <a class="brand brand-mobile" href="<?= site_url('estudos') ?>">
+            <a class="brand brand-mobile" href="<?= esc($homeUrl, 'attr') ?>">
                 <span class="brand-flame" aria-hidden="true">🔥</span>
                 <span class="brand-text">Já&nbsp;Passei</span>
             </a>
             <div class="topbar-title"><?= esc($this->renderSection('page_title', true) ?: '') ?></div>
-            <a class="topbar-user" href="<?= site_url('estudos/configuracoes') ?>" title="<?= esc($user['name'] ?? '') ?>">
+            <a class="topbar-user" href="<?= user_can(Permissions::ESTUDOS) ? site_url('estudos/configuracoes') : site_url('logout') ?>" title="<?= esc($user['name'] ?? '') ?>">
                 <span class="avatar"><?= esc(mb_strtoupper(mb_substr($user['name'] ?? '?', 0, 1))) ?></span>
             </a>
         </header>
