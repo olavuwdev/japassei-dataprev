@@ -31,11 +31,11 @@ $isActive = static function (array $item) use ($currentUrl): bool {
     <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <meta name="theme-color" content="#FAF5EC">
     <title><?= esc($this->renderSection('title', true) ?: 'Estudos') ?> · Já Passei DATAPREV</title>
-    <link rel="icon" href="<?= base_url('favicon.svg') ?>" type="image/svg+xml">
-    <link rel="icon" href="<?= base_url('favicon-32.png') ?>" type="image/png" sizes="32x32">
-    <link rel="icon" href="<?= base_url('favicon-16.png') ?>" type="image/png" sizes="16x16">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>">
-    <link rel="apple-touch-icon" href="<?= base_url('apple-touch-icon.png') ?>" sizes="180x180">
+    <link rel="icon" href="<?= asset_v('favicon.ico') ?>" sizes="any">
+    <link rel="icon" href="<?= asset_v('favicon.svg') ?>" type="image/svg+xml">
+    <link rel="icon" href="<?= asset_v('favicon-32.png') ?>" type="image/png" sizes="32x32">
+    <link rel="icon" href="<?= asset_v('favicon-16.png') ?>" type="image/png" sizes="16x16">
+    <link rel="apple-touch-icon" href="<?= asset_v('apple-touch-icon.png') ?>" sizes="180x180">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">

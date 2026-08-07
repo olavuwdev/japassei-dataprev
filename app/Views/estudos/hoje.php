@@ -248,6 +248,9 @@ $formatDate = static fn (string $date): string => date('d/m/Y', strtotime($date)
 
     function byId(id) { return document.getElementById(id); }
 
+    // Título original da aba, restaurado quando não há sessão ativa
+    var BASE_TITLE = document.title;
+
     // ==================================================================
     // TIMER — estado persistido no backend; aqui só a exibição local
     // ==================================================================
@@ -306,6 +309,18 @@ $formatDate = static fn (string $date): string => date('d/m/Y', strtotime($date)
         if (!display) { return; }
         display.textContent = JP.formatSeconds(elapsedSeconds());
         renderStage();
+        renderTitle();
+    }
+
+    // Espelha o cronômetro no título da aba enquanto a sessão está ativa
+    function renderTitle() {
+        if (!timer.session) {
+            document.title = BASE_TITLE;
+            return;
+        }
+
+        var prefix = timer.session.status === 'running' ? '⏱ ' : '⏸ ';
+        document.title = prefix + JP.formatSeconds(elapsedSeconds()) + ' · ' + BASE_TITLE;
     }
 
     // Etapas derivadas do checklist (soma dos minutos estimados)
